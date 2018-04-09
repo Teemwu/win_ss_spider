@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        .text {
+            font-size: 14px;
+        }
+
+        .item {
+            margin-bottom: 18px;
+        }
+
+        .clearfix:before,
+        .clearfix:after {
+            display: table;
+            content: "";
+        }
+
+        .clearfix:after {
+            clear: both
+        }
+
+        .box-card {
+            width: 100%;
+            max-width: 480px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <el-card class="box-card" style="margin:120px auto">
+            <div class="clearfix" slot="header">
+                <h3>科学上网设置</h3>
+            </div>
+            <el-form ref="form" :model="form" label-width="80px">
+                <el-form-item label="页面地址">
+                    <el-select v-model="form.url" @change="onSubmit" placeholder="请选择爬取的地址">
+                        <el-option label="https://get.ishadowx.net/" value="https://get.ishadowx.net/"></el-option>
+                        <el-option label="http://isx.yt" value="http://isx.yt"></el-option>
+                        <el-option label="http://isx.tn" value="http://isx.tn"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="代理区域">
+                    <el-select v-model="form.country" @change="onSubmit" placeholder="请选代理所在区域">
+                        <el-option label="美国" value="us"></el-option>
+                        <el-option label="日本" value="jp"></el-option>
+                        <el-option label="新加坡" value="sg"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="代理线路">
+                    <el-select v-model="form.line" @change="onSubmit" placeholder="请选择代理线路">
+                        <el-option label="线路A" value="a"></el-option>
+                        <el-option label="线路B" value="b"></el-option>
+                        <el-option label="线路C" value="c"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+        </el-card>
+    </div>
+</body>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data () {
+            return {
+                form: {
+                    url: 'https://get.ishadowx.net/',
+                    country: 'us',
+                    line: 'a'
+                }
+            }
+        },
+        methods: {
+            onSubmit() {
+                axios.get('http://127.0.0.1:8080/setting', {
+                    params: this.form
+                }).then(res => {
+                    if(res.data.success){
+                        this.$message({message:'操作成功!', type: 'success'});  
+                    }else{
+                        if(res.data.codeName==='ENOTFOUND'){
+                            this.$message.error('爬取页面的地址找不到了哦~ \n切换网址试试');
+                        }else{
+                            this.$message.error(`出现错误：${res.data.codeName}`);
+                        }
+                    }
+                })
+            }
+        },
+        mounted(){
+            this.onSubmit();
+        }
+    })
+</script>
+
+</html>
