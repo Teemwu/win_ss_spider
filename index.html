@@ -31,6 +31,11 @@
 
         }
     </style>
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -65,15 +70,11 @@
         </el-card>
     </div>
 </body>
-<!-- import Vue before Element -->
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
-<!-- import JavaScript -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 <script>
     new Vue({
         el: '#app',
-        data () {
+        data() {
             return {
                 form: {
                     url: 'https://get.ishadowx.net/',
@@ -84,22 +85,25 @@
         },
         methods: {
             onSubmit() {
-                axios.get('http://127.0.0.1:8080/setting', {
+                axios.get('http://127.0.0.1:8066/setting', {
                     params: this.form
                 }).then(res => {
-                    if(res.data.success){
-                        this.$message({message:'操作成功!', type: 'success'});  
-                    }else{
-                        if(res.data.codeName==='ENOTFOUND'){
+                    if (res.data.success) {
+                        this.$message({
+                            message: '操作成功!',
+                            type: 'success'
+                        });
+                    } else {
+                        if (res.data.codeName === 'ENOTFOUND') {
                             this.$message.error('爬取页面的地址找不到了哦~ \n切换网址试试');
-                        }else{
+                        } else {
                             this.$message.error(`出现错误：${res.data.codeName}`);
                         }
                     }
                 })
             }
         },
-        mounted(){
+        mounted() {
             this.onSubmit();
         }
     })
