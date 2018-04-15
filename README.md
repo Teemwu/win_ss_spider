@@ -15,7 +15,7 @@
 ```
 npm install
 ```
-3. 运行 `Go.bat` 批处理文件(或者直接命令行执行 `npm run start`)
+3. 运行 `Go.bat` 批处理文件(或者直接命令行执行 `npm run start`，再或者直接使用[pm2](http://pm2.keymetrics.io/docs/usage/cluster-mode/)来执行 `app.js` 文件)
 4. 运行批处理之后系统默认的浏览器会打开 [http://127.0.0.1:8080/](http://127.0.0.1:8080/),此时，浏览器会打开一个页面，如下图
 ![setting](./img/setting.PNG)
 5. shadowsocks开启 `启用系统代理` ，设置如下图
