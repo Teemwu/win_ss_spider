@@ -15,12 +15,12 @@ const exeUrl = './Shadowsocks/Shadowsocks.exe'; //shadowsocket应用程序路径
 const jsonObj = require(jsonUrl);
 const execFile = cp.execFile;
 
-/**
- * 配置服务器
- */
-const hostName = '127.0.0.1'; //设置主机名
-const port = 8080; //设置端口
-const server = http.createServer((req, res) => {
+    /**
+     * 配置服务器
+     */
+    const hostName = '127.0.0.1'; //设置主机名
+    const port = 8066; //设置端口
+    const server = http.createServer((req, res) => {
     // res.setHeader('Content-Type','text/plain');
     res.setHeader('Access-Control-Allow-Origin', "*");
     res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); //允许跨域访问
@@ -48,7 +48,6 @@ const server = http.createServer((req, res) => {
         res.write(formatRes(false,'访问的页面走丢了！','Not_Found',404));
         res.end();
     }
-
 });
 
 /**
