@@ -15,12 +15,12 @@ const exeUrl = './Shadowsocks/Shadowsocks.exe'; //shadowsocket应用程序路径
 const jsonObj = require(jsonUrl);
 const execFile = cp.execFile;
 
-    /**
-     * 配置服务器
-     */
-    const hostName = '127.0.0.1'; //设置主机名
-    const port = 8066; //设置端口
-    const server = http.createServer((req, res) => {
+/**
+ * 配置服务器
+ */
+const hostName = '127.0.0.1'; //设置主机名
+const port = 8066; //设置端口
+const server = http.createServer((req, res) => {
     // res.setHeader('Content-Type','text/plain');
     res.setHeader('Access-Control-Allow-Origin', "*");
     res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); //允许跨域访问
@@ -35,7 +35,7 @@ const execFile = cp.execFile;
         if (obj) {
             crawlPage(obj.url, obj.country, obj.line, res);
         } else {
-            res.write(formatRes(false,'请求数据出错啦~','Request_Err',400));
+            res.write(formatRes(false, '请求数据出错啦~', 'Request_Err', 400));
             res.end();
         }
     } else if (urlData.pathname === '/') {
@@ -45,7 +45,7 @@ const execFile = cp.execFile;
             res.end();
         })
     } else {
-        res.write(formatRes(false,'访问的页面走丢了！','Not_Found',404));
+        res.write(formatRes(false, '访问的页面走丢了！', 'Not_Found', 404));
         res.end();
     }
 });
@@ -63,7 +63,7 @@ server.listen(port, hostName, () => {
 /**
  * 爬取页面信息
  */
-function crawlPage(url, country, line, rep) {
+function crawlPage (url, country, line, rep) {
     axios.get(url).then(res => {
         if (res.status === 200) {
             const $ = cheerio.load(res.data);
@@ -77,15 +77,15 @@ function crawlPage(url, country, line, rep) {
                 "plugin_opts": "",
                 "remarks": "",
                 "timeout": 5
-            },rep);
-            rep.write(formatRes(true,'成功爬取页面信息！'));
+            }, rep);
+            rep.write(formatRes(true, '成功爬取页面信息！'));
         } else {
             rep.write('爬取页面出错！');
             rep.end();
         }
     }).catch(error => {
-        console.log('error:',error);
-        rep.write(formatRes(false,error.errno,error.code,1400));
+        console.log('error:', error);
+        rep.write(formatRes(false, error.errno, error.code, 1400));
         rep.end();
     });
 }
@@ -93,7 +93,7 @@ function crawlPage(url, country, line, rep) {
 /**
  * 写入json文件到系统
  */
-function saveFile(str,rep) {
+function saveFile (str, rep) {
     let newJson = jsonObj;
     newJson['configs'][0] = str;
     fs.writeFile(jsonUrl, JSON.stringify(newJson), 'utf8', err => {
@@ -108,7 +108,7 @@ function saveFile(str,rep) {
 /**
  * 关闭、启动系统应用
  */
-function execShadowSock(rep) {
+function execShadowSock (rep) {
     // cp.spawn('taskkill',['/f','/im','Shadowsocks.exe']);//关闭
     execFile(exeUrl, (err, stdout, stderr) => { //启动
         console.log('应用已启动！');
@@ -119,6 +119,6 @@ function execShadowSock(rep) {
 /**
  * 返回消息统一格式
  */
-function formatRes(success=true,msg='操作成功！',codeName='SUCCESS',code=1200){
-    return JSON.stringify({success:success,msg:msg,codeName:codeName,code:code});
+function formatRes (success = true, msg = '操作成功！', codeName = 'SUCCESS', code = 1200) {
+    return JSON.stringify({ success: success, msg: msg, codeName: codeName, code: code });
 }
