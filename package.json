@@ -9,7 +9,7 @@
   "author": "xiang",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.19.2",
     "babel-register": "^6.26.0",
     "cheerio": "^1.0.0-rc.2"
   },
